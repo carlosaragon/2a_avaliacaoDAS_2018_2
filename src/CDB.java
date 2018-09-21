@@ -4,29 +4,45 @@ public class CDB {
 	public double p;
 	public double i;
 	public double ir;
-	public double rendimento_bruto;
-	public double imposto_de_renda;
-	public double rendimento_liquido;
+	public double rendimentoBruto;
+	public double impostoDeRenda;
 	
-	public CDB(int n, double p, double d, double e) {
+	public CDB(int n, double p, double d) {
 		super();
 		this.n = n;
 		this.p = p;
 		this.i = d;
-		this.ir = e;
 	}
 	
 	public double calculaRendimentoBruto() {
-		return 13.97;
+		if (n <= 180) {
+			ir = 22.5;
+		}
+		else if (n <= 360) {
+			ir = 20.00;
+		}
+		else if (n <= 720) {
+			ir = 17.5;
+		}
+		else {
+			ir = 15.00;
+		}
+		
+		rendimentoBruto = p * n/365 * i/100;
+		
+		return rendimentoBruto;
 		
 	}
 
 	public double calculaImpostoDeRenda() {
-		return 3.14;
+		impostoDeRenda = rendimentoBruto * ir/100;
+		return impostoDeRenda;
 	}
 
 	public double calculaRendimentoLiquido() {
-		return 1.0829;
+		double rendimentoLiquido = 0;
+		rendimentoLiquido = (((rendimentoBruto + p - impostoDeRenda)/p)*100) - 100;
+		return rendimentoLiquido;
 	}
 	
 	
