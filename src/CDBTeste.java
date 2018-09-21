@@ -1,50 +1,58 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
-
-class CDBTeste {
-
-	@Test
-	void  RendimentoBrutoTeste() {
-		CDB cdb = new CDB(60, 1000.00, 8.5);
-		assertEquals(13.97, cdb.calculaRendimentoBruto(), 0.1);
+@RunWith(Parameterized.class)
+public class CDBTeste {
+	@Parameters
+	public static Collection<Object[]> data(){
+		return Arrays.asList(new Object[][]{
+			{60, 1000.0, 8.5, 13.97, 3.14, 1.0829},
+			{120, 500.0, 8.0, 13.15, 2.96, 2.0384},
+			{240, 3000.0, 9.0, 177.53, 35.51, 4.7342}
+		});
 	}
 	
+	@Parameter(0)
+	public int n;
+	@Parameter(1)
+	public double p;
+	@Parameter(2)
+	public double i;
+	@Parameter(3)
+	public double rendimentoBruto;;
+	@Parameter(4)
+	public double impostoDeRenda;
+	@Parameter(5)
+	public double rendimentoLiquido;
+	
 	@Test
-	void  OutroRendimentoBrutoTeste() {
-		CDB cdb2 = new CDB(120, 500.00, 8.0);
-		assertEquals(13.15, cdb2.calculaRendimentoBruto(), 0.1);
+	void  RendimentoBrutoTeste() {
+		CDB cdb = new CDB(n, p, i);
+		assertEquals(rendimentoBruto, cdb.calculaRendimentoBruto(), 0.1);
 	}
+	
 	
 	@Test
 	void  ImpostoDeRendaTeste() {
-		CDB cdb3 = new CDB(60, 1000.00, 8.5);
+		CDB cdb3 = new CDB(n, p, i);
 		cdb3.calculaRendimentoBruto();
-		assertEquals(3.14, cdb3.calculaImpostoDeRenda(), 0.1);
-	}
-	
-	@Test
-	void  OutroImpostoDeRendaTeste() {
-		CDB cdb4 = new CDB(120, 500.00, 8.0);
-		cdb4.calculaRendimentoBruto();
-		assertEquals(2.96, cdb4.calculaImpostoDeRenda(), 0.1);
+		assertEquals(impostoDeRenda, cdb3.calculaImpostoDeRenda(), 0.1);
 	}
 	
 	@Test
 	void  RendimentoLiquidoTeste() {
-		CDB cdb5 = new CDB(60, 1000.00, 8.5);
+		CDB cdb5 = new CDB(n,p, i);
 		cdb5.calculaRendimentoBruto();
 		cdb5.calculaImpostoDeRenda();
-		assertEquals(1.0829, cdb5.calculaRendimentoLiquido(), 0.1);
-	}
-	
-	@Test
-	void  OutroRendimentoLiquidoTeste() {
-		CDB cdb6 = new CDB(120, 500.00, 8.0);
-		cdb6.calculaRendimentoBruto();
-		cdb6.calculaImpostoDeRenda();
-		assertEquals(2.0384, cdb6.calculaRendimentoLiquido(), 0.1);
+		assertEquals(rendimentoLiquido, cdb5.calculaRendimentoLiquido(), 0.1);
 	}
 
 }
